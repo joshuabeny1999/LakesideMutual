@@ -1,0 +1,98 @@
+name: Lakeside Mutual Applications
+services:
+  - name: spring-boot-admin
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: spring-boot-admin/Dockerfile
+    envs:
+      - key: SPRING_BOOT_ADMIN_CLIENT_URL
+        value: http://spring-boot-admin:9000
+
+  - name: customer-core
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: customer-core/Dockerfile
+    envs:
+      - key: SPRING_BOOT_ADMIN_CLIENT_URL
+        value: http://spring-boot-admin:9000
+
+  - name: customer-management-backend
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: customer-management-backend/Dockerfile
+    envs:
+      - key: CUSTOMERCORE_BASEURL
+        value: http://customer-core:8110
+      - key: SPRING_BOOT_ADMIN_CLIENT_URL
+        value: http://spring-boot-admin:9000
+
+  - name: customer-management-frontend
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: customer-management-frontend/Dockerfile
+    envs:
+      - key: REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND
+        value: http://localhost:8080
+      - key: REACT_APP_CUSTOMER_MANAGEMENT_BACKEND
+        value: http://localhost:8100
+
+  - name: policy-management-backend
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: policy-management-backend/Dockerfile
+    envs:
+      - key: CUSTOMERCORE_BASEURL
+        value: http://customer-core:8110
+      - key: SPRING_BOOT_ADMIN_CLIENT_URL
+        value: http://spring-boot-admin:9000
+
+  - name: policy-management-frontend
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: policy-management-frontend/Dockerfile
+    envs:
+      - key: VUE_APP_POLICY_MANAGEMENT_BACKEND
+        value: http://localhost:8090
+
+  - name: customer-self-service-backend
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: customer-self-service-backend/Dockerfile
+    envs:
+      - key: CUSTOMERCORE_BASEURL
+        value: http://customer-core:8110
+      - key: POLICYMANAGEMENT_TCPBROKERBINDADDRESS
+        value: tcp://policy-management-backend:61616
+      - key: SPRING_BOOT_ADMIN_CLIENT_URL
+        value: http://spring-boot-admin:9000
+
+  - name: customer-self-service-frontend
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: customer-self-service-frontend/Dockerfile
+    envs:
+      - key: REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND
+        value: http://localhost:8080
+      - key: REACT_APP_POLICY_MANAGEMENT_BACKEND
+        value: http://localhost:8090
+      - key: REACT_APP_CUSTOMER_MANAGEMENT_BACKEND
+        value: http://localhost:8100
+
+  - name: risk-management-server
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: risk-management-server/Dockerfile
+    envs:
+      - key: ACTIVEMQ_HOST
+        value: policy-management-backend
+      - key: ACTIVEMQ_PORT
+        value: "61613"
