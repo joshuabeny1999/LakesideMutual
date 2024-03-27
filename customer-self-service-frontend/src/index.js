@@ -4,4 +4,8 @@ import App from "./App"
 import "semantic-ui-css/semantic.min.css"
 import "./index.css"
 
-render(<App />, document.getElementById("root"))
+render(
+
+    <BrowserRouter basename="/customer-self-service-frontend/">
+        <App />
+    </BrowserRouter>, document.getElementById("root"))
