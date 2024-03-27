@@ -7,6 +7,6 @@ import "./index.css"
 
 render(
 
-    <BrowserRouter basename="/customer-self-service-frontend/">
+    <BrowserRouter basename="/customer-self-service-frontend">
         <App />
     </BrowserRouter>, document.getElementById("root"))

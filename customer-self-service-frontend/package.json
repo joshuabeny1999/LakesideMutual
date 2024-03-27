@@ -1,6 +1,7 @@
 {
   "name": "customer-self-service-frontend",
   "version": "0.0.1",
+  "homepage": "/customer-self-service-frontend",
   "private": true,
   "devDependencies": {
     "flow-bin": "^0.196.3",
