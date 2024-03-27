@@ -18,6 +18,7 @@ ingress:
           prefix: /policy-management-backend
     - component:
         name: policy-management-frontend
+        preserve_path_prefix: true
       match:
         path:
           prefix: /policy-management-frontend
@@ -28,6 +29,7 @@ ingress:
           prefix: /customer-self-service-backend
     - component:
         name: customer-self-service-frontend
+        preserve_path_prefix: true
       match:
         path:
           prefix: /customer-self-service-frontend
