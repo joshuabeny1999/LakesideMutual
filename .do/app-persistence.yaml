@@ -1,4 +1,4 @@
-name: lakeside-mutual
+name: lakeside-mutual-persistence
 ingress:
   rules:
     - component:
@@ -75,5 +75,6 @@ databases:
   - name: customer-db
     engine: MYSQL
     production: true
+    cluster_name: lakeside-mutual-db-cluster
     db_name: customer
     db_user: customerDBUser
