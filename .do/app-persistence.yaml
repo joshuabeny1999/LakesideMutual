@@ -1,0 +1,79 @@
+name: lakeside-mutual
+ingress:
+  rules:
+    - component:
+        name: customer-management-backend
+      match:
+        path:
+          prefix: /customer-management-backend
+    - component:
+        name: customer-management-frontend
+      match:
+        path:
+          prefix: /
+services:
+  - name: spring-boot-admin
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: spring-boot-admin/Dockerfile
+    source_dir: spring-boot-admin
+    envs:
+      - key: SPRING_BOOT_ADMIN_CLIENT_URL
+        value: http://spring-boot-admin:9000
+    internal_ports:
+      - 9000
+  - name: customer-core
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: customer-core/Dockerfile
+    source_dir: customer-core
+    internal_ports:
+      - 8110
+    envs:
+      - key: SPRING_BOOT_ADMIN_CLIENT_URL
+        value: http://spring-boot-admin:9000
+      - key: SPRING_DATASOURCE_URL
+        value: ${customer-db.DATABASE_URL}
+      - key: SPRING_DATASOURCE_USERNAME
+        value: ${customer-db.USERNAME}
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: ${customer-db.PASSWORD}
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+  - name: customer-management-backend
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: customer-management-backend/Dockerfile
+    source_dir: customer-management-backend
+    http_port: 8100
+    envs:
+      - key: CUSTOMERCORE_BASEURL
+        value: http://customer-core:8110
+      - key: SPRING_BOOT_ADMIN_CLIENT_URL
+        value: http://spring-boot-admin:9000
+
+  - name: customer-management-frontend
+    git:
+      repo_clone_url: https://github.com/joshuabeny1999/LakesideMutual
+      branch: master
+    dockerfile_path: customer-management-frontend/Dockerfile
+    source_dir: customer-management-frontend
+    http_port: 80
+    envs:
+      - key: REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND
+        value: ${APP_URL}/customer-self-service-backend
+      - key: REACT_APP_CUSTOMER_MANAGEMENT_BACKEND
+        value: ${APP_URL}/customer-management-backend
+      - key: REACT_APP_POLICY_MANAGEMENT_FRONTEND
+        value: ${APP_URL}/policy-management-frontend
+
+databases:
+  - name: customer-db
+    engine: MYSQL
+    production: true
+    db_name: customer
+    db_user: customerDBUser
